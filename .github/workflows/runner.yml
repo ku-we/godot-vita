@@ -48,4 +48,4 @@ jobs:
   vita-build:
     name: 🎮 PSVita
     needs: static-checks
-    uses: ./.github/workflows/vita_builds.yml
+uses: ./.github/workflows/vita_builds.yml
