@@ -324,7 +324,7 @@ public:
 			}
 		}
 
-		create_vpk(sfo->title + ".vpk", app_dir);
+		create_vpk(base_path + ".vpk", app_dir);
 		memdelete(sfo);
 		memdelete(da);
 		da = nullptr;
