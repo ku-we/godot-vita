@@ -47,6 +47,7 @@ jobs:
           ./bootstrap-vitasdk.sh
           export PATH=$VITASDK/bin:$PATH
           export VDPM_NONINTERACTIVE=1
+          vdpm openssl-1.1.1
           . "$VITASDK/bin/include/install-packages.sh"
           install_packages
           vdpm vita-rss-libdl
