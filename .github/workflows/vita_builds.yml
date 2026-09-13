@@ -35,6 +35,7 @@ jobs:
           git clone https://github.com/isage/vita-packages-extra
           cd vdpm
           ./bootstrap-vitasdk.sh
+          chmod +x $VITASDK/bin/*
           ./install-all.sh
           export PATH=$VITASDK/bin:$PATH
           vdpm vita-rss-libdl
