@@ -32,14 +32,12 @@ jobs:
         run: |
           sudo apt-get install cmake libarchive-tools fakeroot zip -y
           git clone https://github.com/vitasdk/vdpm
-          cd vdpm
-          git checkout e423be457622
-          cd ..
           git clone https://github.com/isage/vita-packages-extra
           cd vdpm
           ./bootstrap-vitasdk.sh
-          ./install-all.sh
           export PATH=$VITASDK/bin:$PATH
+          . "$VITASDK/bin/include/install-packages.sh"
+          install_packages
           vdpm vita-rss-libdl
           cd ../vita-packages-extra/pvr_psp2
           vita-makepkg
