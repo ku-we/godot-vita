@@ -16,13 +16,23 @@ concurrency:
 jobs:
   vita-template:
     runs-on: "ubuntu-24.04"
-    name: Template (target=release, tools=no)
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - vitagl: false
+            suffix: ""
+          - vitagl: true
+            suffix: "-vitagl"
+    name: "Template (target=release, tools=no)${{ matrix.suffix }}"
 
     steps:
       - uses: actions/checkout@v2
 
       - name: Restore Godot build cache
         uses: ./.github/actions/godot-cache-restore
+        with:
+          cache-name: vita-template${{ matrix.suffix }}
         continue-on-error: true
 
       - name: Setup python and scons
@@ -36,6 +46,7 @@ jobs:
           cd vdpm
           ./bootstrap-vitasdk.sh
           export PATH=$VITASDK/bin:$PATH
+          export VDPM_NONINTERACTIVE=1
           . "$VITASDK/bin/include/install-packages.sh"
           install_packages
           vdpm vita-rss-libdl
@@ -46,7 +57,7 @@ jobs:
       - name: Compilation
         uses: ./.github/actions/godot-build
         with:
-          sconsflags: ${{ env.SCONSFLAGS }}
+          sconsflags: "${{ env.SCONSFLAGS }} vitagl=${{ matrix.vitagl }}"
           platform: vita
           target: release
           tools: false
@@ -54,8 +65,10 @@ jobs:
       - name: Save Godot build cache
         uses: ./.github/actions/godot-cache-save
         with:
-          cache-name: ${{ matrix.cache-name }}
+          cache-name: vita-template${{ matrix.suffix }}
         continue-on-error: true
 
       - name: Upload artifact
         uses: ./.github/actions/upload-artifact
+        with:
+          name: vita-template${{ matrix.suffix }}
