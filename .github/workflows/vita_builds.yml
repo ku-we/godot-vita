@@ -29,13 +29,14 @@ jobs:
         uses: ./.github/actions/godot-deps
 
       - name: Setup VitaSDK
+        env:
+          VITASDK_CHANNEL: nightly
         run: |
           sudo apt-get install cmake libarchive-tools fakeroot zip -y
           git clone https://github.com/vitasdk/vdpm
           git clone https://github.com/isage/vita-packages-extra
           cd vdpm
           ./bootstrap-vitasdk.sh
-          chmod +x $VITASDK/bin/*
           ./install-all.sh
           export PATH=$VITASDK/bin:$PATH
           vdpm vita-rss-libdl
