@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
+      
       - name: Restore Godot build cache
         uses: ./.github/actions/godot-cache-restore
         with:
@@ -42,33 +42,18 @@ jobs:
         run: |
           sudo apt-get install cmake libarchive-tools fakeroot zip -y
           git clone https://github.com/vitasdk/vdpm
+          cd vdpm
+          git checkout e423be457622
+          cd ..
           git clone https://github.com/isage/vita-packages-extra
           cd vdpm
           ./bootstrap-vitasdk.sh
+          ./install-all.sh
           export PATH=$VITASDK/bin:$PATH
-          export VDPM_NONINTERACTIVE=1
-          vdpm openssl-1.1.1
-          . "$VITASDK/bin/include/install-packages.sh"
-          filtered_packages=()
-          for p in "${PACKAGES[@]}"; do
-            [[ "$p" == "openssl" ]] || filtered_packages+=("$p")
-          done
-          PACKAGES=("${filtered_packages[@]}")
-          install_packages
           vdpm vita-rss-libdl
           cd ../vita-packages-extra/pvr_psp2
           vita-makepkg
-          "$VITASDK/libexec/vdpm/pacman" \
-            --config "$VITASDK/etc/pacman.conf" \
-            --root "$VITASDK" \
-            --dbpath "$VITASDK/var/lib/pacman" \
-            --cachedir "$VITASDK/var/cache/pacman/pkg" \
-            --logfile "$VITASDK/var/log/pacman.log" \
-            --noconfirm --noscriptlet --upgrade \
-            --overwrite '*/include/EGL/*' \
-            --overwrite '*/include/GLES2/*' \
-            --overwrite '*/include/KHR/*' \
-            *-vita.pkg.tar.xz
+          vdpm *-arm.tar.xz
 
       - name: Compilation
         uses: ./.github/actions/godot-build
