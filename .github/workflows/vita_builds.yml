@@ -58,7 +58,7 @@ jobs:
           vdpm vita-rss-libdl
           cd ../vita-packages-extra/pvr_psp2
           vita-makepkg
-          vdpm *-arm.tar.xz
+          vdpm *-vita.pkg.tar.xz
 
       - name: Compilation
         uses: ./.github/actions/godot-build
