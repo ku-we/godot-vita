@@ -49,6 +49,11 @@ jobs:
           export VDPM_NONINTERACTIVE=1
           vdpm openssl-1.1.1
           . "$VITASDK/bin/include/install-packages.sh"
+          filtered_packages=()
+          for p in "${PACKAGES[@]}"; do
+            [[ "$p" == "openssl" ]] || filtered_packages+=("$p")
+          done
+          PACKAGES=("${filtered_packages[@]}")
           install_packages
           vdpm vita-rss-libdl
           cd ../vita-packages-extra/pvr_psp2
