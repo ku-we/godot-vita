@@ -57,14 +57,7 @@ jobs:
           install_packages
           vdpm vita-rss-libdl
           cd ../vita-packages-extra/pvr_psp2
-          vita-makepkg
-          "$VITASDK/libexec/vdpm/pacman" \
-            --config "$VITASDK/etc/pacman.conf" \
-            --root "$VITASDK" \
-            --dbpath "$VITASDK/var/lib/pacman" \
-            --cachedir "$VITASDK/var/cache/pacman/pkg" \
-            --logfile "$VITASDK/var/log/pacman.log" \
-            --noconfirm --noscriptlet --upgrade *-vita.pkg.tar.xz
+          PACMAN="$VITASDK/libexec/vdpm/pacman" vita-makepkg -i --noconfirm
 
       - name: Compilation
         uses: ./.github/actions/godot-build
